@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "physical-ai-learner-lab"
+version = "0.1.0"
+description = "A reproducible MuJoCo differential-drive robot learning lab"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "mujoco==3.3.7",
+  "numpy==2.5.4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9,<10", "ruff>=0.15,<1", "setuptools>=69,<100", "wheel>=0.44,<1"]
+visuals = ["imageio>=2.37,<3", "imageio-ffmpeg>=0.6,<1", "matplotlib>=3.11,<4", "pillow>=13,<14"]
+docs = ["mkdocs-material>=9.7,<10"]
+
+[project.scripts]
+physical-ai-sim = "physical_ai_lab.sim_runner:main"
+physical-ai-demo = "physical_ai_lab.demo:main"
+physical-ai-viewer = "physical_ai_lab.viewer:main"
+physical-ai-bridge-host = "physical_ai_lab.bridge_host:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
