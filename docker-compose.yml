@@ -1,0 +1,24 @@
+services:
+  ros2:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    init: true
+    environment:
+      ROS_DOMAIN_ID: "42"
+      ROS_LOCALHOST_ONLY: "1"
+      ROS_BRIDGE_HOST: "${ROS_BRIDGE_HOST:-host.docker.internal}"
+      ROS_BRIDGE_PORT: "8765"
+      PHYSICAL_AI_BRIDGE_TOKEN: "${PHYSICAL_AI_BRIDGE_TOKEN:?Run scripts/run_ros2.sh to create a bridge token}"
+    restart: "no"
+    stop_grace_period: 5s
+
+  ros2-smoke:
+    profiles: ["test"]
+    extends: ros2
+    command: ["python3", "/lab/ros2_smoke_test.py"]
+
+networks:
+  default:
+    name: "${COMPOSE_NETWORK:-physical-ai-learner-lab}"
+    external: ${COMPOSE_NETWORK_EXTERNAL:-false}
