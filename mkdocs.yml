@@ -1,0 +1,80 @@
+site_name: Physical AI Learner Lab
+site_description: Build, simulate, and inspect a differential-drive robot with MuJoCo and ROS 2.
+site_url: https://supashbhat.github.io/physical-ai-learner-lab/
+repo_url: https://github.com/supashbhat/physical-ai-learner-lab
+repo_name: supashbhat/physical-ai-learner-lab
+
+theme:
+  name: material
+  logo: assets/icosa-shell.svg
+  favicon: assets/icosa-shell.svg
+  font:
+    text: Manrope
+    code: JetBrains Mono
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: pink
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: pink
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+
+nav:
+  - Overview: index.md
+  - Start here: quickstart.md
+  - Under the hood:
+      - Build the robot: robot-model.md
+      - Motion and control: motion-control.md
+      - Sensors and odometry: sensing-odometry.md
+      - ROS 2 bridge: ros2-bridge.md
+  - Practice:
+      - Exercises: exercises.md
+      - Camera data: synthetic-data.md
+      - Troubleshooting: troubleshooting.md
+  - Reproducibility: reproducibility.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/intro.js
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/supashbhat/physical-ai-learner-lab
+    - icon: fontawesome/solid/globe
+      link: https://supashbhat.github.io/
+
+copyright: "Built by Supash Bhat · MuJoCo is distributed under the Apache 2.0 license."

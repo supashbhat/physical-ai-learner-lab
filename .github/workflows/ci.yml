@@ -1,0 +1,85 @@
+name: Lab checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    name: macOS · ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            arch: Apple Silicon
+          - runner: macos-15-intel
+            arch: Intel
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13.2"
+          cache: pip
+          cache-dependency-path: requirements.lock
+      - name: Install hash-locked environment
+        run: |
+          python -m pip install --require-hashes -r requirements.lock
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Test, lint, simulate, and build the tutorial
+        run: |
+          python -m pytest -q
+          ruff check src tests docker
+          ruff format --check src tests docker
+          physical-ai-sim
+          mkdocs build --strict
+
+  ros2-container:
+    name: ROS 2 container integration
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13.2"
+          cache: pip
+          cache-dependency-path: requirements.lock
+      - name: Install locked host simulator
+        run: |
+          python -m pip install --require-hashes -r requirements.lock
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Start authenticated host bridge
+        run: |
+          docker network create physical-ai-learner-lab
+          export COMPOSE_NETWORK=physical-ai-learner-lab
+          export ROS_BRIDGE_HOST="$(docker network inspect physical-ai-learner-lab --format '{{(index .IPAM.Config 0).Gateway}}')"
+          export PHYSICAL_AI_BRIDGE_TOKEN="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
+          echo "COMPOSE_NETWORK=physical-ai-learner-lab" >> "$GITHUB_ENV"
+          echo "COMPOSE_NETWORK_EXTERNAL=true" >> "$GITHUB_ENV"
+          echo "ROS_BRIDGE_HOST=$ROS_BRIDGE_HOST" >> "$GITHUB_ENV"
+          echo "PHYSICAL_AI_BRIDGE_TOKEN=$PHYSICAL_AI_BRIDGE_TOKEN" >> "$GITHUB_ENV"
+          physical-ai-bridge-host --host 0.0.0.0 --port 8765 > /tmp/physical-ai-bridge.log 2>&1 &
+          echo "$!" > /tmp/physical-ai-bridge.pid
+          for attempt in {1..50}; do
+            if grep -q "listening on" /tmp/physical-ai-bridge.log; then
+              exit 0
+            fi
+            sleep 0.1
+          done
+          cat /tmp/physical-ai-bridge.log
+          exit 1
+      - name: Run ROS 2 topic integration check
+        run: docker compose --profile test run --build --rm ros2-smoke
+      - name: Stop host bridge
+        if: always()
+        run: |
+          if [[ -f /tmp/physical-ai-bridge.pid ]]; then
+            kill "$(cat /tmp/physical-ai-bridge.pid)" || true
+          fi
+          docker network rm physical-ai-learner-lab || true
