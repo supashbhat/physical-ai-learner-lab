@@ -4,7 +4,7 @@
 
 This repository is a small robotics lab built around a two-wheel robot in MuJoCo. It is meant to be run and changed: inspect the model, drive the robot, view its simulated camera and range scan, and compare wheel odometry with the simulator's true pose. An optional ROS 2 Humble container sends commands and receives odometry and scan messages.
 
-[Open the tutorial](https://supashbhat.github.io/physical-ai-learner-lab/) · [View the case study](https://supashbhat.github.io/projects/physical-ai-learner-lab/index.html) · [Browse the source](https://github.com/supashbhat/physical-ai-learner-lab)
+[Open the tutorial](https://supashbhat.github.io/physical-ai-learner-lab/) · [Read the case study](https://supashbhat.github.io/physical-ai-learner-lab/case-study/) · [Browse the source](https://github.com/supashbhat/physical-ai-learner-lab)
 
 ![Still from the MuJoCo run, with camera, range scan, and odometry views](docs/assets/lab-dashboard.jpg)
 

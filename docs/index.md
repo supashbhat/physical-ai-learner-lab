@@ -4,6 +4,7 @@
   <p>A small robotics stack, kept inspectable: change the model, drive it in MuJoCo, view its simulated camera and range scan, then compare wheel odometry with simulator truth. An optional ROS 2 bridge carries commands and sensor messages between the simulator and a container.</p>
   <div class="lab-actions">
     <a class="lab-button" href="quickstart/">Start the lab <span aria-hidden="true">→</span></a>
+    <a class="lab-button secondary" href="case-study/">Read the project case study</a>
     <a class="lab-button secondary" href="https://github.com/supashbhat/physical-ai-learner-lab">Browse the source</a>
   </div>
 </section>

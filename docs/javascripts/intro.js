@@ -17,10 +17,10 @@
 
   const row = document.createElement("div");
   row.className = "lab-intro__row";
-  const mark = document.createElement("img");
-  mark.className = "lab-intro__mark";
-  mark.src = new URL("assets/icosa-shell.svg", document.baseURI).href;
-  mark.alt = "";
+  const mark = document.createElement("canvas");
+  mark.className = "lab-intro__mark icosa-shell";
+  mark.dataset.shellSize = "76";
+  mark.setAttribute("aria-hidden", "true");
   const copy = document.createElement("div");
   const eyebrow = document.createElement("p");
   eyebrow.className = "lab-intro__eyebrow";
@@ -53,3 +53,12 @@
   window.requestAnimationFrame(() => overlay.classList.add("is-visible"));
   window.setTimeout(finish, 1450);
 })();
+
+const logo = document.querySelector(".md-header__button.md-logo");
+if (logo && !logo.querySelector(".icosa-shell")) {
+  const mark = document.createElement("canvas");
+  mark.className = "icosa-shell lab-header-mark";
+  mark.dataset.shellSize = "43";
+  mark.setAttribute("aria-hidden", "true");
+  logo.replaceChildren(mark);
+}

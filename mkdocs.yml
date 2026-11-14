@@ -35,6 +35,7 @@ theme:
 
 nav:
   - Overview: index.md
+  - Case study: case-study.md
   - Start here: quickstart.md
   - Under the hood:
       - Build the robot: robot-model.md
@@ -69,6 +70,7 @@ extra_css:
 
 extra_javascript:
   - javascripts/intro.js
+  - javascripts/icosa-shell.js
 
 extra:
   social:
