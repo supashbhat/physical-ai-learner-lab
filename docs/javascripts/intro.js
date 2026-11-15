@@ -17,8 +17,10 @@
 
   const row = document.createElement("div");
   row.className = "lab-intro__row";
+  const markFrame = document.createElement("div");
+  markFrame.className = "lab-intro__mark";
   const mark = document.createElement("canvas");
-  mark.className = "lab-intro__mark icosa-shell";
+  mark.className = "icosa-shell";
   mark.dataset.shellSize = "102";
   mark.setAttribute("aria-hidden", "true");
   const copy = document.createElement("div");
@@ -37,7 +39,8 @@
   skip.textContent = "Skip intro";
 
   copy.append(eyebrow, title, line);
-  row.append(mark, copy);
+  markFrame.append(mark);
+  row.append(markFrame, copy);
   overlay.append(row, skip);
   document.body.append(overlay);
 
@@ -56,9 +59,12 @@
 
 const logo = document.querySelector(".md-header__button.md-logo");
 if (logo && !logo.querySelector(".icosa-shell")) {
+  const markFrame = document.createElement("span");
+  markFrame.className = "lab-header-mark-frame";
   const mark = document.createElement("canvas");
   mark.className = "icosa-shell lab-header-mark";
   mark.dataset.shellSize = "90";
   mark.setAttribute("aria-hidden", "true");
-  logo.replaceChildren(mark);
+  markFrame.append(mark);
+  logo.replaceChildren(markFrame);
 }
