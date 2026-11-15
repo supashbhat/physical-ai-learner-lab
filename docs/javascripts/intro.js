@@ -19,7 +19,7 @@
   row.className = "lab-intro__row";
   const mark = document.createElement("canvas");
   mark.className = "lab-intro__mark icosa-shell";
-  mark.dataset.shellSize = "76";
+  mark.dataset.shellSize = "102";
   mark.setAttribute("aria-hidden", "true");
   const copy = document.createElement("div");
   const eyebrow = document.createElement("p");
@@ -58,7 +58,7 @@ const logo = document.querySelector(".md-header__button.md-logo");
 if (logo && !logo.querySelector(".icosa-shell")) {
   const mark = document.createElement("canvas");
   mark.className = "icosa-shell lab-header-mark";
-  mark.dataset.shellSize = "43";
+  mark.dataset.shellSize = "90";
   mark.setAttribute("aria-hidden", "true");
   logo.replaceChildren(mark);
 }
